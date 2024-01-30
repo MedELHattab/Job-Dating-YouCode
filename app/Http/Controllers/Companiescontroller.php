@@ -21,7 +21,7 @@ class CompaniesController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**

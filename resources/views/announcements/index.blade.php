@@ -57,7 +57,7 @@
                 </td>
                
                 <td class="px-6 py-4">
-                    {{ $announcement->company_id }}
+                    {{ $announcement->company->name }}
 
                 </td>
                 <td class="px-6 py-4">

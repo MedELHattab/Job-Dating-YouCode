@@ -31,14 +31,7 @@ class CompaniesController extends Controller
      */
     public function store(Request $request)
     {
-       
-        $request->validate([
-            'name'=>'required|min:10|max:255',
-            'description'=>'required|string',
-            'location'=>'required|string',
-    
-        ]);
-        
+ 
         Companies::create($request->all());
          
         return redirect()->route('companies')
@@ -66,7 +59,7 @@ class CompaniesController extends Controller
      */
     public function update(Request $request, Companies $companies)
     {
-        dd($request);
+        // dd($request);
         // $request->validate([
         //     'name'=>'required|min:10|max:255',
         //     'description'=>'required|string',

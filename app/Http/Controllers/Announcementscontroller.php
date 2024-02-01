@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcements;
+use App\Models\Companies;
 use Illuminate\Http\Request;
 
 class AnnouncementsController extends Controller
@@ -13,8 +14,9 @@ class AnnouncementsController extends Controller
     public function index()
     {
         $announcements = Announcements::latest()->paginate(5);
+        $companies = Companies::latest()->paginate(5);
         
-        return view('announcements.index',compact('announcements'))
+        return view('announcements.index',compact('announcements','companies'))
                     ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -23,7 +25,9 @@ class AnnouncementsController extends Controller
      */
     public function create()
     {
-        return view('announcements.create');
+        $companies = Companies::latest()->paginate(5);
+       return view('announcements.create',compact('companies'))
+                    ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -32,15 +36,15 @@ class AnnouncementsController extends Controller
     public function store(Request $request)
     {
        
-        $request->validate([
-            'name'=>'required|min:10|max:255',
-            'description'=>'required|string',
-            'location'=>'required|string',
+        // $request->validate([
+        //     'title'=>'required|min:10|max:255',
+        //     'description'=>'required|string',
+        //     'company_id'=>'required|string',
     
-        ]);
+        // ]);
         
         Announcements::create($request->all());
-         
+        //  dd($request);
         return redirect()->route('announcements')
                         ->with('success','announcement created successfully.');
     }
@@ -56,9 +60,13 @@ class AnnouncementsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Announcements $announcements)
+    public function edit(Announcements $announcement,Companies $companies) 
     {
-        return view('announcements.edit', compact('announcements'));
+        $announcements = Announcements::latest()->paginate(5);
+        $companies = Companies::latest()->paginate(5);
+        
+        return view('announcements.edit',compact('announcement','companies'))
+                    ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -66,15 +74,10 @@ class AnnouncementsController extends Controller
      */
     public function update(Request $request, Announcements $announcements)
     {
-        $request->validate([
-            'name'=>'required|min:10|max:255',
-            'description'=>'required|string',
-            'location'=>'required|string',
-    
-        ]);
+
         
         $announcements->update($request->all());
-        
+        // dd($request);
         return redirect()->route('announcements')
                         ->with('success','announcement updated successfully');
     }

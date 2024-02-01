@@ -86,6 +86,9 @@
             @endforeach
         </tbody>
     </table>
+    <div class="mt-9 p-3">
+        {{$companies->links()}}
+    </div>
 </div>
 
    

@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Announcements;
+use App\Models\Companies;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,5 +20,17 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        // You need to wrap this part inside the run() method
+        // DB::table('users')->insert([
+        //     'name' => 'Test Userhsss',
+        //     'email' => 'testusersjjs@gmail.com',
+            
+        // ]);
+
+        Companies::factory(10)->create();
+        Announcements::factory(10)->create();
     }
 }
+
+

@@ -84,6 +84,9 @@
             @endforeach
         </tbody>
     </table>
+    <div class="mt-9 p-3">
+        {{$announcements->links()}}
+    </div>
 </div>
 </div>
 </x-app-layout>

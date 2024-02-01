@@ -72,11 +72,11 @@ class AnnouncementsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Announcements $announcements)
+    public function update(Request $request, Announcements $announcement)
     {
 
         
-        $announcements->update($request->all());
+        $announcement->update($request->all());
         // dd($request);
         return redirect()->route('announcements')
                         ->with('success','announcement updated successfully');

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Companies;
+use Faker\Provider\ar_EG\Company;
 use Illuminate\Http\Request;
+use App\Http\Requests\CompaniesRequest;
 
 
 class CompaniesController extends Controller
@@ -29,7 +31,7 @@ class CompaniesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CompaniesRequest $request)
     {
  
         Companies::create($request->all());
@@ -57,7 +59,7 @@ class CompaniesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Companies $companies)
+    public function update(CompaniesRequest $request, Companies $company)
     {
         // dd($request);
         // $request->validate([
@@ -66,7 +68,9 @@ class CompaniesController extends Controller
         //     'location'=>'required|string',
     
         // ]);
-        $companies->update($request->all());
+        $company->update($request->only(['name','description','location']));
+        
+        // dd($request);
        
         
         return redirect()->route('companies')

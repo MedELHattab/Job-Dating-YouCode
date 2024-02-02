@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AnnouncementsRequest;
 use App\Models\Announcements;
 use App\Models\Companies;
 use Illuminate\Http\Request;
@@ -33,7 +34,7 @@ class AnnouncementsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AnnouncementsRequest $request)
     {
        
         // $request->validate([
@@ -43,7 +44,7 @@ class AnnouncementsController extends Controller
     
         // ]);
         
-        Announcements::create($request->all());
+        Announcements::create($request->validated());
         //  dd($request);
         return redirect()->route('announcements')
                         ->with('success','announcement created successfully.');
@@ -72,11 +73,11 @@ class AnnouncementsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Announcements $announcement)
+    public function update(AnnouncementsRequest $request, Announcements $announcement)
     {
 
         
-        $announcement->update($request->all());
+        $announcement->update($request->validated());
         // dd($request);
         return redirect()->route('announcements')
                         ->with('success','announcement updated successfully');

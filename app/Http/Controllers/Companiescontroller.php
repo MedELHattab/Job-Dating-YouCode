@@ -34,7 +34,7 @@ class CompaniesController extends Controller
     public function store(CompaniesRequest $request)
     {
  
-        Companies::create($request->all());
+        Companies::create($request->validated());
          
         return redirect()->route('companies')
                         ->with('success','Company created successfully.');
@@ -68,7 +68,7 @@ class CompaniesController extends Controller
         //     'location'=>'required|string',
     
         // ]);
-        $company->update($request->only(['name','description','location']));
+        $company->update($request->validated());
         
         // dd($request);
        

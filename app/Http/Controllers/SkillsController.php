@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Skills;
-
+use App\Models\User;
 use App\Http\Requests\SkillsRequest;
+use Illuminate\Http\Request;
 
 class SkillsController extends Controller
 {
@@ -93,7 +94,30 @@ class SkillsController extends Controller
     }
 
 
-    // public function myskills(){
-        
-    // }
+    public function myskills()
+    {
+        $allSkills = Skills::all();
+        // Assuming the many-to-many relationship is defined in your User model
+        $skills = auth()->user()->skills()->latest()->paginate(5);
+       
+    
+        return view('skills.myskills', compact('skills','allSkills'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function updateMyskills(Request $request)
+{
+    // Validate the request as needed
+
+    // Assuming the many-to-many relationship is defined in your User model
+    $user = auth()->user();
+
+    // Sync the selected skill_ids with the user's skills
+    $user->skills()->sync($request->input('skill_ids', []));
+
+    return redirect()->route('skills.myskills')
+                    ->with('success', 'Skills updated successfully.');
+}
+    
+
 }

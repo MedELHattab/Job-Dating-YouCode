@@ -30,10 +30,15 @@
    
    
 <div class="relative overflow-x-auto lg:px-10">
-    <div class="row  flex justify-start m-3 ">
+    <div class="row  flex justify-start m-3 gap-3 ">
         <div class="col-lg-12 margin-tb  w-40 ">
             <div class="pull-right">
                 <a class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" href="{{ route('announcements.create') }}"> Create  Announcement</a>
+            </div>
+        </div>
+        <div class="col-lg-12 margin-tb     w-40 ">
+            <div class="pull-right">
+                <a class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" href="{{ route('announcements') }}"> Announcement Archived</a>
             </div>
         </div>
     </div>

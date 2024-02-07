@@ -25,6 +25,7 @@ class CompaniesRequest extends FormRequest
             'name'=>'required|min:10|max:255',
             'description'=>'required|string',
             'location'=>'required|string',
+            'image' => 'nullable|mimes:png,jpeg,jpg,webp'
         ];
     }
 
@@ -37,6 +38,7 @@ class CompaniesRequest extends FormRequest
             'description.string' => 'Le champ description doit être une chaîne de caractères.',
             'location.required' => 'Le champ adresse est requis.',
             'location.string' => 'Le champ adresse doit être une chaîne de caractères.',
+            'image.mimes' => 'please  put a valid format for image',
         ];
     }
 }

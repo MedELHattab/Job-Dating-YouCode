@@ -27,7 +27,7 @@
         </button>
       </div>
     @endif      
-<form class="max-w-sm mx-auto" action="{{ route('companies.store') }}" method="POST">
+<form class="max-w-sm mx-auto" action="{{ route('companies.store') }}" method="POST" enctype="multipart/form-data" >
     @csrf
     <div class="mb-5">
       <label for="username-success" class="block mb-2 text-sm font-medium text-green-700 dark:text-green-500">Name</label>
@@ -45,7 +45,12 @@
         
       </div>
       <div>
-        <button type="submit" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+        <label for="image" class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500">Image</label>
+        <input type="file" name="image" class="bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-red-100 dark:border-red-400" placeholder="image">
+        
+      </div>
+      <div class="py-3">
+        <button type="submit" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Submit</button>
       </div>
   </form>
     </div>

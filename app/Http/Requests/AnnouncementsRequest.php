@@ -25,6 +25,7 @@ class AnnouncementsRequest extends FormRequest
             'title'=>'required|min:10|max:255',
             'description'=>'required|string',
             'company_id'=>'required|string',
+            'image' => 'nullable|mimes:png,jpeg,jpg,webp'
         ];
     }
     public function messages():array{
@@ -36,6 +37,7 @@ class AnnouncementsRequest extends FormRequest
             'description.string' => 'Le champ description doit être une chaîne de caractères.',
             'company_id.required' => 'Le champ entreprise est requis.',
             'company_id.string' => 'Le champ entreprise doit être une chaîne de caractères.',
+            'image.mimes' => 'please  put a valid format for image'
         ];
     }
 }

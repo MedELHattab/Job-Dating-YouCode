@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -5,6 +6,7 @@
         </h2>
     </x-slot>
 
+    
     <div class="py-12 lg:px-10">
 
         @if ($errors->any())
@@ -35,7 +37,7 @@
                 </button>
             </div>
         @endif
-        <form class="max-w-sm mx-auto" action="{{ route('announcements.store') }}" method="POST">
+        <form class="max-w-sm mx-auto" action="{{ route('announcements.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-5">
                 <label for="username-success"
@@ -66,9 +68,33 @@
                         @endforeach
                     </select>
                 </div>
+
+                <div class="mb-5">
+                    <label for="skill_id"
+                        class="block mb-2 text-sm font-medium text-blue-700 dark:text-blue-500">Select Skills</label>
+                    <select name="skill_ids[]" multiple="multiple"
+                        class="js-example-basic-multiple bg-blue-50 border border-blue-500 text-blue-900 placeholder-blue-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-blue-100 dark:border-blue-400 ">
+                        <!-- Populate the options dynamically based on your companies data -->
+                        @foreach ($skills as $skill)
+                            <option value="{{ $skill->id }}">{{ $skill->skill }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div>
+                    <label for="image" class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500">Image</label>
+                    <input type="file" name="image" class="bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-red-100 dark:border-red-400" placeholder="image">
+                    
+                  </div>
+                  <div class="py-3">
                 <button type="submit"
                     class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
             </div>
         </form>
     </div>
 </x-app-layout>
+    <script>
+        $(document).ready(function() {
+    $('.js-example-basic-multiple').select2();
+});
+    </script>

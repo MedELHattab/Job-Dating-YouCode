@@ -24,7 +24,9 @@ class CompaniesController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
+
     {
+        
         return view('companies.create');
     }
 
@@ -32,10 +34,27 @@ class CompaniesController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(CompaniesRequest $request)
-    {
- 
-        Companies::create($request->validated());
-         
+    {   
+        
+        if($request->image){
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $fileName = time().'.'.$extension;
+            $path = 'uploads/companies/';
+            $file->move($path, $fileName);
+            Companies::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'location'=> $request->location,
+                'image' => $fileName,
+            ]);
+        }else{
+        Companies::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'location'=> $request->location,
+        ]);
+         }
         return redirect()->route('companies')
                         ->with('success','Company created successfully.');
     }
@@ -61,16 +80,25 @@ class CompaniesController extends Controller
      */
     public function update(CompaniesRequest $request, Companies $company)
     {
-        // dd($request);
-        // $request->validate([
-        //     'name'=>'required|min:10|max:255',
-        //     'description'=>'required|string',
-        //     'location'=>'required|string',
-    
-        // ]);
-        $company->update($request->validated());
-        
-        // dd($request);
+        if($request->image){
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $fileName = time().'.'.$extension;
+            $path = 'uploads/companies/';
+            $file->move($path, $fileName);
+            $company->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'location'=> $request->location,
+                'image' => $fileName,
+            ]);
+        }else{
+        $company->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'location'=> $request->location,
+        ]);
+         }
        
         
         return redirect()->route('companies')
@@ -87,4 +115,12 @@ class CompaniesController extends Controller
         return redirect()->route('companies')
                         ->with('success','Company deleted successfully');
     }
+
+    public function archive(){
+        $companies = Companies::onlyTrashed()->get();
+
+        return view('companies.archive',compact('companies'));
+    }
+
+
 }

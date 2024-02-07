@@ -4,6 +4,7 @@ use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SkillsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,11 +19,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
-    
+Route::get('/allannouncements', [AnnouncementsController::class, 'allann'])->name('allannouncements');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'role:admin'])->name('dashboard');
+
+Route::get('/student', function () {
+    return view('student');
+})->middleware(['auth', 'verified', 'role:student'])->name('student');
 
 
 // Route::post('/create-company', [CompaniesContcompaniesroller::class, 'create']);
@@ -37,18 +42,27 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    
+    Route::get('/companies/archive', [CompaniesController::class, 'archive'])->name('companies.archive');
+    Route::get('/skills/archive', [SkillsController::class, 'archive'])->name('skills.archive');
+    Route::get('/announcements/archive', [AnnouncementsController::class, 'archive'])->name('announcements.archive');
     Route::resource("companies", CompaniesController::class, [
         'names'=>[
             'index' => "companies",
         ]
     ]);
-
+    
     Route::resource("announcements", AnnouncementsController::class, [
         'names'=>[
             'index' => "announcements",
         ]
     ]);
+    Route::resource("skills", SkillsController::class, [
+        'names'=>[
+            'index' => "skills",
+        ]
+    ]);
+
 
     // Route::get('/announcements', [AnnouncementsController::class, 'index'])->name('announcements');
     // Route::get('/announcements/create', [AnnouncementsController::class, 'create'])->name('announcements.create');

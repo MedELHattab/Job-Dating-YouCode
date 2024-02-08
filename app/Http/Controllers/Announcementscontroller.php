@@ -6,6 +6,7 @@ use App\Http\Requests\AnnouncementsRequest;
 use App\Models\Announcements;
 use App\Models\Companies;
 use App\Models\Skills;
+use Illuminate\Http\Request;
 
 class AnnouncementsController extends Controller
 {
@@ -16,15 +17,16 @@ class AnnouncementsController extends Controller
     {
         $announcements = Announcements::latest()->paginate(5);
         $companies = Companies::latest()->paginate(5);
-        
-        return view('announcements.index',compact('announcements','companies'))
-                    ->with('i', (request()->input('page', 1) - 1) * 5);
+
+        return view('announcements.index', compact('announcements', 'companies'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
-    public function allann(){
+    public function allann()
+    {
         $announcements = Announcements::all();
         $companies = Companies::all();
-        return view('allannouncements',compact('announcements','companies'));
+        return view('allannouncements', compact('announcements', 'companies'));
     }
 
     /**
@@ -34,93 +36,102 @@ class AnnouncementsController extends Controller
     {
         $companies = Companies::all();
         $skills = Skills::all();
-       return view('announcements.create',compact('companies','skills'))
-                    ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('announcements.create', compact('companies', 'skills'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(AnnouncementsRequest $request)
-{
-    $announcement = null;
+    {
+        $announcement = null;
 
-    if ($request->image) {
-        $file = $request->file('image');
-        $extension = $file->getClientOriginalExtension();
-        $fileName = time().'.'.$extension;
-        $path = 'uploads/announcements/';
-        $file->move($path, $fileName);
+        if ($request->image) {
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $fileName = time() . '.' . $extension;
+            $path = 'uploads/announcements/';
+            $file->move($path, $fileName);
 
-        $announcement = Announcements::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'company_id' => $request->company_id,
-            'image' => $fileName,
-        ]);
-    } else {
-        $announcement = Announcements::create([
-            'title' => $request->name,
-            'description' => $request->description,
-            'company_id' => $request->company_id,
-        ]);
+            $announcement = Announcements::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'company_id' => $request->company_id,
+                'image' => $fileName,
+            ]);
+        } else {
+            $announcement = Announcements::create([
+                'title' => $request->name,
+                'description' => $request->description,
+                'company_id' => $request->company_id,
+            ]);
+        }
+
+        // Attach skills to the announcement
+        $announcement->skills()->attach($request->input('skill_ids', []));
+
+        return redirect()->route('announcements')->with('success', 'Announcement created successfully.');
     }
-
-    // Attach skills to the announcement
-    $announcement->skills()->attach($request->input('skill_ids', []));
-
-    return redirect()->route('announcements')->with('success', 'Announcement created successfully.');
-}
 
     /**
      * Display the specified resource.
      */
-    public function show(Announcements $announcements)
+    public function show($id)
     {
-        return view('announcements.show',compact('announcements'));
-    }
+        $announcement = Announcements::find($id);
 
+        // You might want to add some error handling in case the announcement is not found
+        if (!$announcement) {
+            abort(404, 'Announcement not found');
+        }
+
+        $companies = Companies::all();
+        $skills = Skills::all();
+
+        return view('announcements.show', compact('announcement', 'companies', 'skills'));
+    }
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Announcements $announcement,Companies $companies) 
+    public function edit(Announcements $announcement, Companies $companies)
     {
         $announcements = Announcements::all();
         $companies = Companies::all();
         $skills = Skills::all();
-        
-        return view('announcements.edit',compact('announcement','companies','skills'))
-                    ->with('i', (request()->input('page', 1) - 1) * 5);
+
+        return view('announcements.edit', compact('announcement', 'companies', 'skills'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(AnnouncementsRequest $request, Announcements $announcement)
-{
-    $data = [
-        'title' => $request->title,
-        'description' => $request->description,
-        'company_id' => $request->company_id,
-    ];
+    {
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'company_id' => $request->company_id,
+        ];
 
-    if ($request->hasFile('image')) {
-        $file = $request->file('image');
-        $extension = $file->getClientOriginalExtension();
-        $fileName = time().'.'.$extension;
-        $path = 'uploads/announcements/';
-        $file->move($path, $fileName);
-        $data['image'] = $fileName;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $fileName = time() . '.' . $extension;
+            $path = 'uploads/announcements/';
+            $file->move($path, $fileName);
+            $data['image'] = $fileName;
+        }
+
+        // Update the announcement details
+        $announcement->update($data);
+
+        // Sync the skills
+        $announcement->skills()->sync($request->input('skill_ids', []));
+
+        return redirect()->route('announcements')->with('success', 'Announcement updated successfully.');
     }
-
-    // Update the announcement details
-    $announcement->update($data);
-
-    // Sync the skills
-    $announcement->skills()->sync($request->input('skill_ids', []));
-
-    return redirect()->route('announcements')->with('success', 'Announcement updated successfully.');
-}
 
 
     /**
@@ -131,13 +142,34 @@ class AnnouncementsController extends Controller
         $announcement->delete();
         //  dd($announcement);
         return redirect()->route('announcements')
-                        ->with('success','announcement deleted successfully');
+            ->with('success', 'announcement deleted successfully');
     }
 
-    public function archive(){
+    public function archive()
+    {
         $announcements = Announcements::onlyTrashed()->get();
         $companies = Companies::all();
         // dd($announcements);
-        return view('announcements.archive',compact('announcements','companies'));
+        return view('announcements.archive', compact('announcements', 'companies'));
+    }
+
+    public function myapplications()
+    {
+        $announcements = auth()->user()->announcements()->latest()->paginate(5);
+
+
+        return view('announcements.myapplications', compact('announcements'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function apply(Request $request, Announcements $announcement)
+    {
+        $user = auth()->user();
+
+        // Attach the single announcement_id to the user's announcements
+        $user->announcements()->attach($announcement->id);
+
+        return redirect()->route('announcements.show', compact('announcement'))
+            ->with('success', 'Thank you for applying.');
     }
 }

@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/skills/myskills', [SkillsController::class, 'myskills'])->name('skills.myskills');
     Route::put('/skills/updateMyskills', [SkillsController::class, 'updateMyskills'])->name('skills.updateMyskills');
+    Route::get('/announcements/myapplications', [AnnouncementsController::class, 'myapplications'])->name('announcements.myapplications');
+    Route::put('/announcements/{announcement}/apply', [AnnouncementsController::class, 'apply'])->name('announcements.apply');
     Route::get('/companies/archive', [CompaniesController::class, 'archive'])->name('companies.archive');
     Route::get('/skills/archive', [SkillsController::class, 'archive'])->name('skills.archive');
     Route::get('/announcements/archive', [AnnouncementsController::class, 'archive'])->name('announcements.archive');

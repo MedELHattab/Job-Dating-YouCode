@@ -19,4 +19,8 @@ class Announcements extends Model
     public function skills(){
         return $this->belongsToMany(Skills::class, 'announcement_skill', 'announcement_id', 'skill_id');
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class, 'user_announcement', 'user_id', 'announcement_id');
+    }
 }

@@ -92,7 +92,7 @@
                 <div class="">
                     <div class="mb-5">
                         <label for="skill_ids" class="block mb-2 text-sm font-medium text-blue-700 dark:text-blue-500">Edit Skills</label>
-                        <select name="skill_ids[]" multiple="multiple" class="js-example-basic-multiple bg-blue-50 border border-blue-500 text-blue-900 placeholder-blue-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-blue-100 dark:border-blue-400">
+                        <select style="width: 100%" name="skill_ids[]" multiple="multiple" class="js-example-basic-multiple bg-blue-50 border border-blue-500 text-blue-900 placeholder-blue-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-blue-100 dark:border-blue-400">
                             <!-- Populate the options dynamically based on all skills -->
                             @foreach ($allSkills as $skill)
                                 <option value="{{ $skill->id }}" {{ in_array($skill->id, auth()->user()->skills->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $skill->skill }}</option>

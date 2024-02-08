@@ -1,14 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Skills') }}
+            {{ __('Announcements') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         
-    
-   
     @if(session('success'))
 
 <div id="alert-3" class=" lg:m-10 flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
@@ -33,16 +31,6 @@
    
 <div class="relative overflow-x-auto lg:px-10">
     <div class="row  flex justify-start m-3 gap-3 ">
-        <div class="col-lg-12 margin-tb     w-40 ">
-            <div class="pull-right">
-                <a class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" style="padding-block: 1.5em" href="{{ route('skills.create') }}"> Create  skill</a>
-            </div>
-        </div>
-        <div class="col-lg-12 margin-tb w-40 py-0.25">
-            <div class="pull-right">
-                <a class="py-5 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5  text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" href="{{ route('skills.archive') }}"> Skills Archived</a>
-            </div>
-        </div>
     </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -51,41 +39,42 @@
                     id
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    skill
+                    title
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Action
+                    Description
                 </th>
+                <th scope="col" class="px-6 py-3">
+                    company
+                </th>
+                
             </tr>
         </thead>
         <tbody>
-            @foreach ($skills as $skill)
+            @foreach ($announcements as $announcement)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                  <td class="px-6 py-4">
-                    {{ $skill->id }}
+                    {{ $announcement->id }}
                 </td>
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ $skill->skill }}
+                    {{ $announcement->title }}
                 </th>
+                <td class="px-6 py-4">
+                    {{ $announcement->description }}
+                </td>
                
                 <td class="px-6 py-4">
-                    <a href="{{ route('skills.edit', $skill) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                    <form action="{{ route('skills.destroy', $skill) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
-                    </form>
-             </td>
+                    {{ $announcement->company->name }}
+
+                </td>
+                
             </tr>
             @endforeach
         </tbody>
     </table>
     <div class="mt-9 p-3">
-        {{$skills->links()}}
+        {{$announcements->links()}}
     </div>
 </div>
-
-   
-
-    </div>
+</div>
 </x-app-layout>

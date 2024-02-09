@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\CompaniesController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SkillsController;
 use Illuminate\Support\Facades\Route;
+
+use function Laravel\Prompts\search;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,10 +23,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 Route::get('/allannouncements', [AnnouncementsController::class, 'allann'])->name('allannouncements');
+Route::get('/search',[HomeController::class,'search']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified', 'role:admin'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified', 'role:admin'])->name('dashboard');
 
 Route::get('/student', function () {
     return view('student');
@@ -39,6 +43,9 @@ Route::get('/student', function () {
 
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'statistic'])
+        ->middleware(['auth', 'verified', 'role:admin'])
+        ->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -50,18 +57,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/skills/archive', [SkillsController::class, 'archive'])->name('skills.archive');
     Route::get('/announcements/archive', [AnnouncementsController::class, 'archive'])->name('announcements.archive');
     Route::resource("companies", CompaniesController::class, [
-        'names'=>[
+        'names' => [
             'index' => "companies",
         ]
     ]);
-    
+
     Route::resource("announcements", AnnouncementsController::class, [
-        'names'=>[
+        'names' => [
             'index' => "announcements",
         ]
     ]);
     Route::resource("skills", SkillsController::class, [
-        'names'=>[
+        'names' => [
             'index' => "skills",
         ]
     ]);
@@ -73,11 +80,11 @@ Route::middleware('auth')->group(function () {
     // Route::post('/announcements/store', [AnnouncementsController::class, 'store'])->name('announcements.store');
     // Route::put('/announcements/edit', [AnnouncementsController::class, 'edit'])->name('announcements.edit');
     // Route::delete('/announcements/destroy', [AnnouncementsController::class, 'destroy'])->name('announcements.destroy');
-   
-    
+
+
 
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 // Route::resource('companies', CompaniesController::class);

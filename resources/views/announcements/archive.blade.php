@@ -60,34 +60,23 @@
         </thead>
         <tbody>
             @foreach ($announcements as $announcement)
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                 <td class="px-6 py-4">
-                    {{ $announcement->id }}
-                </td>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ $announcement->title }}
-                </th>
-                <td class="px-6 py-4">
-                    {{ $announcement->description }}
-                </td>
-               
-                <td class="px-6 py-4">
-                    {{ $announcement->company->name }}
-
-                </td>
-                <td class="px-6 py-4">
-                    {{ $announcement->deleted_at }}
-
-                </td>
-                {{-- <td class="px-6 py-4">
-                    <a href="{{ route('announcements.edit', $announcement) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                    <form action="{{ route('announcements.destroy', $announcement) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
-                    </form>
-             </td> --}}
-            </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td class="px-6 py-4">{{ $announcement->id }}</td>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ $announcement->title }}
+                    </th>
+                    <td class="px-6 py-4">{{ $announcement->description }}</td>
+        
+                    <td class="px-6 py-4">
+                        @if ($announcement->company)
+                            {{ $announcement->company->name }}
+                        @else
+                            Company Deleted
+                        @endif
+                    </td>
+        
+                    <td class="px-6 py-4">{{ $announcement->deleted_at }}</td>
+                </tr>
             @endforeach
         </tbody>
     </table>

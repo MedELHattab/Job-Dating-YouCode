@@ -33,7 +33,7 @@ class HomeController extends Controller
     function  search(Request $request){
 
           
-        $announcements = Announcements::with('company')->where('title', 'like', '%' . $request->search_string . '%')->get();
+        $announcements = Announcements::with('company','skills')->where('title', 'like', '%' . $request->search_string . '%')->get();
          
         if(count($announcements))
         return response()->json($announcements);

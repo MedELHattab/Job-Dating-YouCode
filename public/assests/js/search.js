@@ -68,6 +68,9 @@ function appenRespose(data){
                                 <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">${r.title}</h2>
                                 <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">${r.company.name }}</h2>
                                 
+                                // @foreach($announcement->skills as $skill)
+                                //     <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">{{ $skill->skill }}</h2>
+                                // @endforeach
 
                                 <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
                                 ${r.description }

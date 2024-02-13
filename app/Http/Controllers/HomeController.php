@@ -19,7 +19,7 @@ class HomeController extends Controller
                 $query->whereIn('id', $userSkills);
             })->latest()->paginate(10);
         } else {
-            // User is not authenticated, handle it accordingly
+
             $announcements = Announcements::latest()->paginate(5);
         }
 
